@@ -37,16 +37,19 @@ public class ProductRepository {
             tag = tag.toLowerCase();
             List<ProductResponse> filtered = new ArrayList<>();
             for (ProductResponse p: products) {
-                List<String> lowercaseTags = new ArrayList<>();
-                for (String t: p.getTags()) {
-                    lowercaseTags.add(t.toLowerCase());
-                }
-
-                if (lowercaseTags.contains(tag)) {
+                if (lowercaseTags(p).contains(tag)) {
                     filtered.add(p);
                 }
             }
             return filtered;
         }
+    }
+
+    private static List<String> lowercaseTags(ProductResponse p) {
+        List<String> lowercaseTags = new ArrayList<>();
+        for (String t: p.getTags()) {
+            lowercaseTags.add(t.toLowerCase());
+        }
+        return lowercaseTags;
     }
 }
