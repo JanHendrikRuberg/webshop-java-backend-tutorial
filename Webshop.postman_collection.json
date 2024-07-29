@@ -7,12 +7,12 @@
 	},
 	"item": [
 		{
-			"name": "Get Products",
+			"name": "Get Customer",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/products",
+					"raw": "http://localhost:8080/api/customers/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -20,7 +20,8 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"products"
+						"customers",
+						"1"
 					]
 				}
 			},
