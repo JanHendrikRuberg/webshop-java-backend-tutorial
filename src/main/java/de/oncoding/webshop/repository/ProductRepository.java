@@ -2,10 +2,12 @@ package de.oncoding.webshop.repository;
 
 import de.oncoding.webshop.model.ProductCreateRequest;
 import de.oncoding.webshop.model.ProductResponse;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class ProductRepository {
 
     List<ProductResponse> products = new ArrayList<>();

@@ -3,9 +3,11 @@ package de.oncoding.webshop.repository
 import de.oncoding.webshop.model.OrderCreateRequest
 import de.oncoding.webshop.model.OrderResponse
 import de.oncoding.webshop.model.OrderStatus
+import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.UUID
 
+@Service
 class OrderRepository {
 
     val orders = mutableListOf<OrderResponse>()

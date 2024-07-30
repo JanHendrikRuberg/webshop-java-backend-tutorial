@@ -1,7 +1,9 @@
 package de.oncoding.webshop.repository
 
 import de.oncoding.webshop.model.CustomerResponse
+import org.springframework.stereotype.Service
 
+@Service
 class CustomerRepository {
 
     val customers = listOf(

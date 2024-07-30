@@ -5,14 +5,16 @@ import de.oncoding.webshop.repository.CustomerRepository
 import de.oncoding.webshop.repository.OrderPositionRepository
 import de.oncoding.webshop.repository.OrderRepository
 import de.oncoding.webshop.repository.ProductRepository
+import org.springframework.stereotype.Service
 import java.util.UUID
 
-class OrderService {
-
-    val orderRepository = OrderRepository()
-    val orderPositionRepository = OrderPositionRepository()
-    val customerRepository = CustomerRepository()
-    val productRepository = ProductRepository()
+@Service
+class OrderService (
+    val productRepository: ProductRepository,
+    val orderRepository: OrderRepository,
+    val orderPositionRepository: OrderPositionRepository,
+    val customerRepository: CustomerRepository
+){
 
     fun createOrder(request: OrderCreateRequest): OrderResponse {
 
