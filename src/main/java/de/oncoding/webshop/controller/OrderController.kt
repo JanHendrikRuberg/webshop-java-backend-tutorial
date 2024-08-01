@@ -4,7 +4,6 @@ import de.oncoding.webshop.model.OrderCreateRequest
 import de.oncoding.webshop.model.OrderPositionCreateRequest
 import de.oncoding.webshop.model.OrderResponse
 import de.oncoding.webshop.service.OrderService
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
