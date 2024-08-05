@@ -1,9 +1,7 @@
 package de.oncoding.webshop.service;
 
 import de.oncoding.webshop.exceptions.IdNotFoundException;
-import de.oncoding.webshop.model.OrderPositionResponse;
-import de.oncoding.webshop.model.ProductCreateRequest;
-import de.oncoding.webshop.model.ProductResponse;
+import de.oncoding.webshop.model.*;
 import de.oncoding.webshop.repository.OrderPositionRepository;
 import de.oncoding.webshop.repository.OrderRepository;
 import de.oncoding.webshop.repository.ProductRepository;
@@ -12,9 +10,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 public class ShoppingCartServiceTest {
     private ProductRepository productRepository;
@@ -22,10 +24,10 @@ public class ShoppingCartServiceTest {
 
     @BeforeEach
     public void setupTests() {
-        productRepository = new ProductRepository();
+        productRepository = mock(ProductRepository.class);
         service = new ShoppingCartService(
-                new OrderRepository(),
-                new OrderPositionRepository(),
+                mock(OrderRepository.class),
+                mock(OrderPositionRepository.class),
                 productRepository
         );
 
@@ -37,7 +39,7 @@ public class ShoppingCartServiceTest {
 
         // when
         Long result = service.calculateSumForCart(
-                new ArrayList<OrderPositionResponse>(),
+                new ArrayList<>(),
                 500
         );
 
@@ -48,7 +50,14 @@ public class ShoppingCartServiceTest {
     @Test
     public void testThat_calculateSumWithOneProduct_sumsPriceOfProduct(){
         // given
-        ProductResponse savedProduct = saveProduct(1000);
+        ProductResponse savedProduct = new ProductResponse(
+                UUID.randomUUID().toString(),
+                "",
+                "",
+                1000,
+                new ArrayList<>()
+        );
+        given(productRepository.findById(savedProduct.getId())).willReturn(Optional.of(savedProduct));
         
         List<OrderPositionResponse> orderPositions = new ArrayList<>();
         addOrderPosition(orderPositions, savedProduct, 1);
@@ -63,8 +72,23 @@ public class ShoppingCartServiceTest {
     @Test
     public void testThat_calculateSumWithTwoProducts_sumsPriceOfProduct(){
         // given
-        ProductResponse savedProduct1 = saveProduct(1000);
-        ProductResponse savedProduct2 = saveProduct(2000);
+        ProductResponse savedProduct1 = new ProductResponse(
+                UUID.randomUUID().toString(),
+                "",
+                "",
+                1000,
+                new ArrayList<>()
+        );
+        given(productRepository.findById(savedProduct1.getId())).willReturn(Optional.of(savedProduct1));
+
+        ProductResponse savedProduct2 = new ProductResponse(
+                UUID.randomUUID().toString(),
+                "",
+                "",
+                2000,
+                new ArrayList<>()
+        );
+        given(productRepository.findById(savedProduct2.getId())).willReturn(Optional.of(savedProduct2));
 
         List<OrderPositionResponse> orderPositions = new ArrayList<>();
         addOrderPosition(orderPositions, savedProduct1, 1);
@@ -80,8 +104,23 @@ public class ShoppingCartServiceTest {
     @Test
     public void testThat_calculateSumWithNegativeQuantity_throwsException(){
         // given
-        ProductResponse savedProduct1 = saveProduct(1000);
-        ProductResponse savedProduct2 = saveProduct(2000);
+        ProductResponse savedProduct1 = new ProductResponse(
+                UUID.randomUUID().toString(),
+                "",
+                "",
+                1000,
+                new ArrayList<>()
+        );
+        given(productRepository.findById(savedProduct1.getId())).willReturn(Optional.of(savedProduct1));
+
+        ProductResponse savedProduct2 = new ProductResponse(
+                UUID.randomUUID().toString(),
+                "",
+                "",
+                2000,
+                new ArrayList<>()
+        );
+        given(productRepository.findById(savedProduct2.getId())).willReturn(Optional.of(savedProduct2));
 
         List<OrderPositionResponse> orderPositions = new ArrayList<>();
         addOrderPosition(orderPositions, savedProduct1, 1);
@@ -122,12 +161,4 @@ public class ShoppingCartServiceTest {
         );
     }
 
-    private ProductResponse saveProduct(int price) {
-        return productRepository.save(new ProductCreateRequest(
-                "",
-                "",
-                price,
-                new ArrayList<>()
-        ));
-    }
 }
