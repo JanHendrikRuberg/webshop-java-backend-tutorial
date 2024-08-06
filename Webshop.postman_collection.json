@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Get Customer",
+			"name": "GET Customer",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -28,7 +28,29 @@
 			"response": []
 		},
 		{
-			"name": "Post Products",
+			"name": "GET Customer Shopping Cart",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/customers/1/shoppingcart",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customers",
+						"1",
+						"shoppingcart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Products",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -57,7 +79,37 @@
 			"response": []
 		},
 		{
-			"name": "Get Products By Id",
+			"name": "PUT Product",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"priceInCent\": 39900\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/products/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Products By Id",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -78,7 +130,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Products",
+			"name": "GET Products",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -98,7 +150,7 @@
 			"response": []
 		},
 		{
-			"name": "Delete Products By Id",
+			"name": "DELETE Products By Id",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -119,7 +171,7 @@
 			"response": []
 		},
 		{
-			"name": "Post Orders",
+			"name": "POST Orders",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -148,13 +200,13 @@
 			"response": []
 		},
 		{
-			"name": "Post Order Positions",
+			"name": "PUT Order",
 			"request": {
-				"method": "POST",
+				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"productId\": \"fd30e11e-e0f2-4e8d-8a81-5a615b6f5fb8\",\r\n        \"quantity\": 5\r\n}",
+					"raw": "{\r\n        \"orderStatus\": \"DELIVERED\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -162,7 +214,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/orders/82282165-5ba6-480f-8763-d3baeedefedd/positions",
+					"raw": "http://localhost:8080/api/orders/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -171,7 +223,37 @@
 					"path": [
 						"api",
 						"orders",
-						"82282165-5ba6-480f-8763-d3baeedefedd",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Order Positions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"productId\": \"2372fd59-d705-468d-b555-578d5588fe7b\",\r\n        \"quantity\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/orders/f8b00d26-db51-4c6c-a602-d9d45a4e8be8/positions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"orders",
+						"f8b00d26-db51-4c6c-a602-d9d45a4e8be8",
 						"positions"
 					]
 				}

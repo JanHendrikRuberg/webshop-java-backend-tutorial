@@ -8,6 +8,7 @@ import de.oncoding.webshop.repository.OrderRepository
 import de.oncoding.webshop.repository.ProductRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import java.util.UUID
 
 @Service
@@ -19,10 +20,17 @@ class OrderService (
 ){
 
     fun createOrder(request: OrderCreateRequest): OrderResponse {
-
         customerRepository.findById(request.customerId)
 
-        return orderRepository.save(request)
+        val orderResponse = OrderResponse(
+            id = UUID.randomUUID().toString(),
+            customerId = request.customerId,
+            orderTime = LocalDateTime.now(),
+            status = OrderStatus.NEW,
+            orderPositions = emptyList()
+        )
+
+        return orderRepository.save(orderResponse)
     }
 
     fun createNewPositionForOrder(
@@ -50,5 +58,14 @@ class OrderService (
         return orderPositionResponse
     }
 
+    fun updateOrder(id: String, request: OrderUpdateRequest): OrderResponse {
+        val order = orderRepository.findById(id)
+            ?: throw IdNotFoundException("Order with id $id not found")
 
+        val updatedOrder = order.copy(
+            status = request.orderStatus ?: order.status
+        )
+
+        return orderRepository.save(updatedOrder)
+    }
 }
