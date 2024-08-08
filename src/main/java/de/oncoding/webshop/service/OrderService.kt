@@ -2,10 +2,7 @@ package de.oncoding.webshop.service
 
 import de.oncoding.webshop.exceptions.IdNotFoundException
 import de.oncoding.webshop.model.*
-import de.oncoding.webshop.repository.CustomerRepository
-import de.oncoding.webshop.repository.OrderPositionRepository
-import de.oncoding.webshop.repository.OrderRepository
-import de.oncoding.webshop.repository.ProductRepository
+import de.oncoding.webshop.repository.*
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -22,15 +19,15 @@ class OrderService (
     fun createOrder(request: OrderCreateRequest): OrderResponse {
         customerRepository.findById(request.customerId)
 
-        val orderResponse = OrderResponse(
+        val order = OrderEntity(
             id = UUID.randomUUID().toString(),
             customerId = request.customerId,
             orderTime = LocalDateTime.now(),
-            status = OrderStatus.NEW,
-            orderPositions = emptyList()
+            status = OrderStatus.NEW
         )
 
-        return orderRepository.save(orderResponse)
+        val savedOrder = orderRepository.save(order)
+        return mapToResponse(savedOrder)
     }
 
     fun createNewPositionForOrder(
@@ -48,24 +45,44 @@ class OrderService (
                 message = "Product with ${request.productId} not found",
                 statusCode = HttpStatus.BAD_REQUEST)
 
-        val orderPositionResponse = OrderPositionResponse(
+        val orderPosition = OrderPositionEntity(
             id = UUID.randomUUID().toString(),
             orderId = orderId,
             productId = request.productId,
             quantity = request.quantity
         )
-        orderPositionRepository.save(orderPositionResponse)
-        return orderPositionResponse
+        val savedOrderPosition = orderPositionRepository.save(orderPosition)
+
+        return mapToResponse(savedOrderPosition)
     }
 
     fun updateOrder(id: String, request: OrderUpdateRequest): OrderResponse {
-        val order = orderRepository.findById(id)
-            ?: throw IdNotFoundException("Order with id $id not found")
+        val order = orderRepository.getReferenceById(id)
 
         val updatedOrder = order.copy(
             status = request.orderStatus ?: order.status
         )
 
-        return orderRepository.save(updatedOrder)
+        val savedOrder = orderRepository.save(updatedOrder)
+        return mapToResponse(savedOrder)
     }
+
+    private fun mapToResponse(savedOrder: OrderEntity) = OrderResponse(
+        id = savedOrder.id,
+        customerId = savedOrder.customerId,
+        orderTime = savedOrder.orderTime,
+        status = savedOrder.status,
+        orderPositions = emptyList()
+    )
+
+    companion object {
+        fun mapToResponse(savedOrderPosition: OrderPositionEntity) =
+            OrderPositionResponse(
+                id = savedOrderPosition.id,
+                orderId = savedOrderPosition.orderId,
+                productId = savedOrderPosition.productId,
+                quantity = savedOrderPosition.quantity
+            )
+    }
+
 }

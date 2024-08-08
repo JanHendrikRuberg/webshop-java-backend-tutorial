@@ -2,6 +2,7 @@ package de.oncoding.webshop.controller
 
 import de.oncoding.webshop.model.CustomerResponse
 import de.oncoding.webshop.model.ShoppingCartResponse
+import de.oncoding.webshop.repository.CustomerEntity
 import de.oncoding.webshop.repository.CustomerRepository
 import de.oncoding.webshop.service.ShoppingCartService
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,7 +19,13 @@ class CustomerController(
     fun getCustomerById(
         @PathVariable id: String
     ) : CustomerResponse {
-        return customerRepository.findById(id)
+        val customer: CustomerEntity = customerRepository.getReferenceById(id)
+        return CustomerResponse(
+            id = customer.id,
+            firstName = customer.firstName,
+            lastName = customer.lastName,
+            email = customer.email
+        )
     }
 
     @GetMapping("/customers/{id}/shoppingcart")
