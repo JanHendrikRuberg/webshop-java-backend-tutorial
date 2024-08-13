@@ -1,10 +1,8 @@
 package de.oncoding.webshop.controller
 
-import de.oncoding.webshop.model.OrderCreateRequest
-import de.oncoding.webshop.model.OrderPositionCreateRequest
-import de.oncoding.webshop.model.OrderResponse
-import de.oncoding.webshop.model.OrderUpdateRequest
+import de.oncoding.webshop.model.*
 import de.oncoding.webshop.service.OrderService
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -37,6 +35,13 @@ class OrderController(
         @RequestBody request: OrderUpdateRequest
     ) {
         orderService.updateOrder(id, request)
+    }
+
+    @GetMapping("/orders/{id}")
+    fun getOrder(
+        @PathVariable id: String
+    ): GetOrderResponse {
+        return orderService.getOrder(id)
     }
 
 }

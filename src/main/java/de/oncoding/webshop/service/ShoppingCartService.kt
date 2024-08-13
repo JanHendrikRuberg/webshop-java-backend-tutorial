@@ -4,7 +4,7 @@ import de.oncoding.webshop.entity.ProductEntity
 import de.oncoding.webshop.exceptions.IdNotFoundException
 import de.oncoding.webshop.model.OrderPositionResponse
 import de.oncoding.webshop.model.ShoppingCartResponse
-import de.oncoding.webshop.repository.OrderEntity
+import de.oncoding.webshop.entity.OrderEntity
 import de.oncoding.webshop.repository.OrderPositionRepository
 import de.oncoding.webshop.repository.OrderRepository
 import de.oncoding.webshop.repository.ProductRepository
