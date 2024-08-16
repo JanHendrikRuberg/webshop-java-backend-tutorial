@@ -1,7 +1,6 @@
 package de.oncoding.webshop.entity
 
 import de.oncoding.webshop.model.OrderStatus
-import de.oncoding.webshop.repository.OrderPositionEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

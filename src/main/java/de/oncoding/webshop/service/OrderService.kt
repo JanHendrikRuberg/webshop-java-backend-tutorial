@@ -1,6 +1,7 @@
 package de.oncoding.webshop.service
 
 import de.oncoding.webshop.entity.OrderEntity
+import de.oncoding.webshop.entity.OrderPositionEntity
 import de.oncoding.webshop.exceptions.IdNotFoundException
 import de.oncoding.webshop.model.*
 import de.oncoding.webshop.repository.*
