@@ -7,6 +7,8 @@ import de.oncoding.webshop.model.ProductResponse;
 import de.oncoding.webshop.model.ProductUpdateRequest;
 import de.oncoding.webshop.repository.ProductRepository;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,15 +26,17 @@ public class ProductController {
         this.productRepository = productRepository;
     }
 
+    @Cacheable("productsResponses")
     @GetMapping("/products")
     public List<ProductResponse> getAllProducts(
             @RequestParam(required = false) String tag
     ) {
-        // return productRepository.findAll(tag);
-        return productRepository
-                .findAll()
+        var products = tag == null
+                ? productRepository.findAll()
+                : productRepository.findByTag(tag);
+
+        return products
                 .stream()
-                .filter((productEntity) -> tag == null || productEntity.getTags().contains(tag))
                 .map(ProductController::mapToResponse)
                 .collect(Collectors.toList());
     }
@@ -47,6 +51,7 @@ public class ProductController {
 
     }
 
+    @CacheEvict(value = "productsResponses", allEntries = true)
     @DeleteMapping("/products/{id}")
     public ResponseEntity deleteProduct(
             @PathVariable String id
@@ -55,6 +60,7 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
+    @CacheEvict(value = "productsResponses", allEntries = true)
     @PostMapping("/products")
     public ProductResponse createProduct(
             @RequestBody ProductCreateRequest request
@@ -70,6 +76,7 @@ public class ProductController {
         return mapToResponse(savedProduct);
     }
 
+    @CacheEvict(value = "productsResponses", allEntries = true)
     @PutMapping("/products/{id}")
     public ProductResponse updateProduct(
             @RequestBody ProductUpdateRequest request,
