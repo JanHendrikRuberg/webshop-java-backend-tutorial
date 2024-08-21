@@ -1,7 +1,7 @@
 package de.oncoding.webshop.controller;
 
 import de.oncoding.webshop.entity.ProductEntity;
-import de.oncoding.webshop.exceptions.IdNotFoundException;
+import de.oncoding.webshop.exception.IdNotFoundException;
 import de.oncoding.webshop.model.ProductCreateRequest;
 import de.oncoding.webshop.model.ProductResponse;
 import de.oncoding.webshop.model.ProductUpdateRequest;

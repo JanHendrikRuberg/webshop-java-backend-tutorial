@@ -1,4 +1,4 @@
-package de.oncoding.webshop.exceptions
+package de.oncoding.webshop.exception
 
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus

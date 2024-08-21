@@ -2,7 +2,7 @@ package de.oncoding.webshop.service
 
 import de.oncoding.webshop.entity.OrderEntity
 import de.oncoding.webshop.entity.OrderPositionEntity
-import de.oncoding.webshop.exceptions.IdNotFoundException
+import de.oncoding.webshop.exception.IdNotFoundException
 import de.oncoding.webshop.model.*
 import de.oncoding.webshop.repository.*
 import org.springframework.http.HttpStatus
@@ -104,10 +104,10 @@ class OrderService (
             status = order.status,
             orderTime = order.orderTime,
             customer = CustomerResponse(
-                customer.id,
-                customer.firstName,
-                customer.lastName,
-                customer.email
+                id = customer.id,
+                firstName = customer.firstName,
+                lastName = customer.lastName,
+                email = customer.email
             ),
             orderPositions = positions
         )
