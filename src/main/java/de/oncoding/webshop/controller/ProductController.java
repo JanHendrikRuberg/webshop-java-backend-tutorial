@@ -6,10 +6,17 @@ import de.oncoding.webshop.model.ProductCreateRequest;
 import de.oncoding.webshop.model.ProductResponse;
 import de.oncoding.webshop.model.ProductUpdateRequest;
 import de.oncoding.webshop.repository.ProductRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +33,29 @@ public class ProductController {
         this.productRepository = productRepository;
     }
 
+    @Operation(
+            tags = "Produkte",
+            description = "Diese Schnittstelle gibt Liste von Produkten zurück.",
+            responses = {
+                    @ApiResponse(
+                            description = "Du bist nicht authentifiziert",
+                            content = @Content(),
+                            responseCode = "401"
+                    ),
+                    @ApiResponse(
+                            description = "War erfolgreich",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    array = @ArraySchema(
+                                            schema = @Schema(implementation = ProductResponse.class)
+                                    )
+                            ),
+                            responseCode = "200"
+                    ),
+
+    }
+    )
+
     @Cacheable("productsResponses")
     @GetMapping("/products")
     public List<ProductResponse> getAllProducts(
@@ -41,6 +71,34 @@ public class ProductController {
                 .collect(Collectors.toList());
     }
 
+    @Operation(
+            tags = "Produkte",
+            description = "Diese Schnittstelle gibt das Produkt der id zurück.",
+            responses = {
+                    @ApiResponse(
+                            description = "Du bist nicht authentifiziert",
+                            content = @Content(),
+                            responseCode = "401"
+                    ),
+                    @ApiResponse(
+                            description = "War erfolgreich",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ProductResponse.class)
+                            ),
+                            responseCode = "200"
+                    ),
+
+            },
+            parameters = {
+                    @Parameter(
+                            description = "Hierbei handelt es sich um die id des Produkts",
+                            name = "id"
+                    )
+
+            }
+    )
+
     @GetMapping("/products/{id}")
     public ProductResponse  getProductById(
             @PathVariable String id
@@ -51,6 +109,9 @@ public class ProductController {
 
     }
 
+    @Operation(
+            tags = "Produkte"
+    )
     @CacheEvict(value = "productsResponses", allEntries = true)
     @DeleteMapping("/products/{id}")
     public ResponseEntity deleteProduct(
@@ -60,6 +121,9 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(
+            tags = "Produkte"
+    )
     @CacheEvict(value = "productsResponses", allEntries = true)
     @PostMapping("/products")
     public ProductResponse createProduct(
@@ -76,6 +140,9 @@ public class ProductController {
         return mapToResponse(savedProduct);
     }
 
+    @Operation(
+            tags = "Produkte"
+    )
     @CacheEvict(value = "productsResponses", allEntries = true)
     @PutMapping("/products/{id}")
     public ProductResponse updateProduct(
@@ -109,6 +176,5 @@ public class ProductController {
                 product.getTags()
         );
     }
-
 
 }
